@@ -31,17 +31,20 @@ void mqttPost()
 
 void reconnectMqtt()
 {
-  Serial.print("Attempting MQTT connection...");
-  // Attempt to connect
-  // If you do not want to use a username and password, change next line to
-  //if (client.connect("ESP8266Client"))
-  if (client.connect("ObjetChambre", MQTT_USER, MQTT_PASS))
+  if(!mqttConnected)
   {
-    Serial.println("connected");
-  }
-  else
-  {
-    Serial.print("failed, rc=");
-    Serial.println(client.state());
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    // If you do not want to use a username and password, change next line to
+    //if (client.connect("ESP8266Client"))
+    if (client.connect("ObjetChambre", MQTT_USER, MQTT_PASS))
+    {
+      Serial.println("connected");
+    }
+    else
+    {
+      Serial.print("failed, rc=");
+      Serial.println(client.state());
+    }
   }
 }

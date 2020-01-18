@@ -20,6 +20,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 bool wifiConnected = false;
+bool mqttConnected = false;
 
 volatile bool etatSwitch[3] = {false, false, false};
 
@@ -68,11 +69,9 @@ void setup()
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
 
-
   // Afficheur
   afficheur.setBrightness(0);
   afficheur.setSegments(SEG_BOOT);
-
 
 
   // Ecran
@@ -147,7 +146,9 @@ void setup()
 
   // MQTT
   client.setServer(MQTT_SERVER, 1883);
+  reconnectMqtt();
   t.every(DELAI_MQTT, mqttPost);
+  t.every(5 * DELAI_MQTT, reconnectMqtt);
 
   // Meteo
   updateMeteo();
@@ -192,17 +193,15 @@ void loop()
   // Timer
   t.update();
 
-  
   /*// Gestion Web
   if(wifiConnected)
     server.handleClient();*/
 
   // Gestion MQTT
-  if (!client.connected())
-    reconnectMqtt();
-  else
+  mqttConnected = client.connected();
+  if(wifiConnected && mqttConnected)
     client.loop();
-  Serial.println(client.connected());
+  Serial.println(mqttConnected);
 
   
   // Luminosite afficheur
@@ -340,8 +339,11 @@ void loop()
     {
       if(etatAffich == ALARME_ETAT)
       {
-        EEPROM.write(ADDRESS_ETATALAR, 1);
-        EEPROM.commit();
+        if(EEPROM.read(ADDRESS_ETATALAR) != 1)
+        {
+          EEPROM.write(ADDRESS_ETATALAR, 1);
+          EEPROM.commit();
+        }
       }
       else if(etatAffich == ALARME_HOUR)
         alarme.hour = (alarme.hour + 1) % 24;
@@ -353,8 +355,11 @@ void loop()
     {
       if(etatAffich == ALARME_ETAT)
       {
-        EEPROM.write(ADDRESS_ETATALAR, 0);
-        EEPROM.commit();
+        if(EEPROM.read(ADDRESS_ETATALAR) != 0)
+        {
+          EEPROM.write(ADDRESS_ETATALAR, 0);
+          EEPROM.commit();
+        }
       }
       else if(etatAffich == ALARME_HOUR)
         alarme.hour = (alarme.hour +23) % 24;
@@ -391,8 +396,11 @@ void loop()
         rtc.adjust(DateTime(now.year(), now.month(), now.day(), now.hour(), now.minute(), 30));
       else if(etatAffich == TIME_MODE)
       {
-        EEPROM.write(ADDRESS_MODEREGL, AUTO);
-        EEPROM.commit();
+        if(EEPROM.read(ADDRESS_MODEREGL) != AUTO)
+        {
+          EEPROM.write(ADDRESS_MODEREGL, AUTO);
+          EEPROM.commit();
+        }
         
         if(wifiConnected)
           timeClient.update();
@@ -419,8 +427,13 @@ void loop()
       else if(etatAffich == TIME_SECONDE)
         rtc.adjust(DateTime(now.year(), now.month(), now.day(), now.hour(), now.minute(), 0));
       else if(etatAffich == TIME_MODE)
-        EEPROM.write(ADDRESS_MODEREGL, MANUEL);
-        EEPROM.commit();
+      {
+        if(EEPROM.read(ADDRESS_MODEREGL) != MANUEL)
+        {
+          EEPROM.write(ADDRESS_MODEREGL, MANUEL);
+          EEPROM.commit();
+        }
+      }
         
       etatSwitch[MOINS] = false;
     }

@@ -55,10 +55,10 @@
 
 #define NB_MESURES   10
 
-#define ADDRESS_MODEREGL    0
-#define ADDRESS_ETATALAR    1
-#define ADDRESS_H_ALARME    2
-#define ADDRESS_M_ALARME    3
+#define ADDRESS_MODEREGL    4
+#define ADDRESS_ETATALAR    5
+#define ADDRESS_H_ALARME    6
+#define ADDRESS_M_ALARME    7
 
 #define ALARME_DUREE      5
 
@@ -74,11 +74,15 @@
 #define DELAI_MQTT      120000
 #define DELAI_MESURE    2000
 
-#define WIFI_SSID   "UPC614C757"
-#define WIFI_PASS   "tHbdk5cykK8m"
+#define WIFI_SSID   "Orange-BB54"
+#define WIFI_PASS   "superpaulo"
+
+//#define WIFI_SSID   "UPC614C757"
+//#define WIFI_PASS   "tHbdk5cykK8m"
 
 #define DELAI_CONNEXION   30
-#define LOCALIZATION_KEY  String("995")   // St-Blaise
+#define LOCALIZATION_KEY  String("623")         // Paris
+//#define LOCALIZATION_KEY  String("995")       // St-Blaise
 //#define LOCALIZATION_KEY  String("1109787")   // Cesson
 #define API_KEY           String("aU7vFJJFtJrHBOAKXeqvjICKPwrFkMCi")
 #define URL_METEO         String("http://dataservice.accuweather.com/forecasts/v1/daily/1day/" + LOCALIZATION_KEY + "?apikey=" + API_KEY + "&language=fr-fr&details=true&metric=true")
@@ -113,6 +117,7 @@ extern WiFiClient espClient;
 extern PubSubClient client;
 
 extern bool wifiConnected;
+extern bool mqttConnected;
 
 extern volatile bool etatSwitch[3];
 
@@ -161,4 +166,3 @@ extern Timer t;
 
 
 #endif
-
