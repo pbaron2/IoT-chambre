@@ -83,10 +83,14 @@
 #define API_KEY           String("aU7vFJJFtJrHBOAKXeqvjICKPwrFkMCi")
 #define URL_METEO         String("http://dataservice.accuweather.com/forecasts/v1/daily/1day/" + LOCALIZATION_KEY + "?apikey=" + API_KEY + "&language=fr-fr&details=true&metric=true")
 
-#define MQTT_SERVER   "ec2-18-222-208-169.us-east-2.compute.amazonaws.com"
-#define MQTT_USER     "Fx1KhsgQ7mLwkMHdHuqW"
-#define MQTT_PASS     ""
-#define MQTT_TOPIC "v1/devices/me/telemetry"
+//#define MQTT_SERVER   "ec2-18-222-208-169.us-east-2.compute.amazonaws.com"
+//#define MQTT_USER     "Fx1KhsgQ7mLwkMHdHuqW"
+//#define MQTT_PASS     ""
+//#define MQTT_TOPIC    "v1/devices/me/telemetry"
+#define MQTT_SERVER   "192.168.1.100"
+#define MQTT_USER     "iotroom"
+#define MQTT_PASS     "iotroompassword"
+#define MQTT_TOPIC    "room_measures"
 
 
 extern RTC_DS1307 rtc;

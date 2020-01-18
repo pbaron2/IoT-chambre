@@ -23,7 +23,8 @@ void mqttPost()
   if(dataValid)
   {
     Serial.println("{\"temperature\":" + String(float(temperature) / 10) + ",\"humidity\":" + String(humidite) + "}");
-    client.publish(MQTT_TOPIC, ("{\"temperature\":" + String(float(temperature) / 10) + ",\"humidity\":" + String(humidite) + "}").c_str(), true);
+//    client.publish(MQTT_TOPIC, ("{\"temperature\":" + String(float(temperature) / 10) + ",\"humidity\":" + String(humidite) + "}").c_str(), true);
+    client.publish(MQTT_TOPIC, (String(float(temperature) / 10) + "/" + String(humidite)).c_str(), true);
   }
 }
 
@@ -44,4 +45,3 @@ void reconnectMqtt()
     Serial.println(client.state());
   }
 }
-

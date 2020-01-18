@@ -58,8 +58,8 @@ const uint8_t SEG_BOOT[] = {
 
 void setup()
 {
+  
   Serial.begin(115200);
-
 
   // RTC
   Wire.begin(PIN_SDA, PIN_SCL);
@@ -68,9 +68,11 @@ void setup()
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
 
+
   // Afficheur
   afficheur.setBrightness(0);
   afficheur.setSegments(SEG_BOOT);
+
 
 
   // Ecran
@@ -234,7 +236,7 @@ void loop()
       etatAffich = (Affichage) ((etatAffich + 1) % 5);
     else
     {
-      EEPROM.write(ADDRESS_MODEREGL, MANUEL);
+      EEPROM.write(ADDRESS_MODEREGL, AUTO);
       EEPROM.commit();
       etatAffich = (Affichage) ((etatAffich + 1) % 5);
     }
@@ -338,7 +340,7 @@ void loop()
     {
       if(etatAffich == ALARME_ETAT)
       {
-        EEPROM.write(ADDRESS_ETATALAR, 0);
+        EEPROM.write(ADDRESS_ETATALAR, 1);
         EEPROM.commit();
       }
       else if(etatAffich == ALARME_HOUR)
@@ -351,7 +353,7 @@ void loop()
     {
       if(etatAffich == ALARME_ETAT)
       {
-        EEPROM.write(ADDRESS_ETATALAR, 1);
+        EEPROM.write(ADDRESS_ETATALAR, 0);
         EEPROM.commit();
       }
       else if(etatAffich == ALARME_HOUR)
@@ -477,15 +479,3 @@ void loop()
   digitalWrite(PIN_DHT, LOW);
   delay(100);*/
 }
-
-
-
-
-
-
-
-
-
-
-
-
