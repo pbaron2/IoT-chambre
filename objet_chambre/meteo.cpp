@@ -28,19 +28,19 @@ void updateMeteo()
       payload = http.getString();   // Get the request response payload
       Serial.println(payload);
       
-      const size_t capacity = 2*JSON_ARRAY_SIZE(1) + 4*JSON_OBJECT_SIZE(2) + 2*JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(8) + JSON_OBJECT_SIZE(9) + 1110;
-      DynamicJsonBuffer jsonBuffer(capacity);
+      const size_t capacity = 2*JSON_ARRAY_SIZE(1) + JSON_ARRAY_SIZE(6) + 9*JSON_OBJECT_SIZE(2) + 24*JSON_OBJECT_SIZE(3) + 6*JSON_OBJECT_SIZE(4) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(9) + JSON_OBJECT_SIZE(15) + 2*JSON_OBJECT_SIZE(21) + 2910;
+      DynamicJsonDocument root(capacity);
     
-      JsonObject& root = jsonBuffer.parseObject(payload);
+      DeserializationError error = deserializeJson(root, payload);
       
-      if (root.success())
+      if (!error)
       {
         Serial.println("JSON parse");
-        
-        meteo.tempMin = float(root["DailyForecasts"][0]["Temperature"]["Minimum"]["Value"]) * 10;
-        meteo.tempMax = float(root["DailyForecasts"][0]["Temperature"]["Maximum"]["Value"]) * 10;
-        meteo.vent = int(root["DailyForecasts"][0]["Day"]["Wind"]["Speed"]["Value"]);
-        meteo.pluie = int(root["DailyForecasts"][0]["Day"]["TotalLiquid"]["Value"]);
+        JsonObject DailyForecasts_0 = root["DailyForecasts"][0];
+        meteo.tempMin = float(DailyForecasts_0["Temperature"]["Minimum"]["Value"]) * 10;
+        meteo.tempMax = float(DailyForecasts_0["Temperature"]["Maximum"]["Value"]) * 10;
+        meteo.vent = int(DailyForecasts_0["Day"]["Wind"]["Speed"]["Value"]);
+        meteo.pluie = int(DailyForecasts_0["Day"]["TotalLiquid"]["Value"]);
       }
     }
     else
@@ -109,9 +109,10 @@ void updateDHT()
 
 void updateLuminosite()
 {
-  luminositeL[iLuminosite] = map(analogRead(PIN_PHOTORES), 0, 1023, 7, 0);
+  lumiRaw = analogRead(PIN_PHOTORES);
+  luminositeL[iLuminosite] = map(lumiRaw, 0, 1023, 7, 0);
   Serial.print("\nLuminosite (raw) : ");
-  Serial.print(analogRead(PIN_PHOTORES));
+  Serial.print(lumiRaw);
   iLuminosite = (iLuminosite + 1) % NB_MESURES;
   luminosite = moyenneMesures(luminositeL, NB_MESURES);
 }
@@ -125,5 +126,3 @@ int moyenneMesures(int mesures[], int nb)
   }
   return S / nb;
 }
-
-

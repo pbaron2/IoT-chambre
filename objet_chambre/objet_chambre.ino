@@ -30,6 +30,7 @@ String moisL[12] = {"Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juill
 int temperature = 0;
 int humidite = 0;
 int luminosite = 0;
+int lumiRaw = 0;
 
 alarmTime alarme = {0, 0};
 bool activateAlarme = false;
@@ -101,6 +102,7 @@ void setup()
   
 
   // WiFi
+  WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   Serial.print("Connecting to ");

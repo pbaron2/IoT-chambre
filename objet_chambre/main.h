@@ -53,7 +53,7 @@
 #define MINUTES   2
 #define HOURS     0
 
-#define NB_MESURES   10
+#define NB_MESURES   5
 
 #define ADDRESS_MODEREGL    4
 #define ADDRESS_ETATALAR    5
@@ -151,6 +151,7 @@ typedef struct meteoStruct meteoStruct;
 extern int temperature;
 extern int humidite;
 extern int luminosite;
+extern int lumiRaw;
 extern bool dataValid;
 
 extern alarmTime alarme;
