@@ -77,6 +77,7 @@ void setup()
 
   // Ecran
   ecran.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  ecran.dim(false);
   affichageInitTitre();
 
 
@@ -211,6 +212,9 @@ void loop()
   afficheur.setBrightness(luminosite);
   Serial.print("\nLUMINOSITE: ");
   Serial.println(luminosite);
+
+  // Luminosite ecran
+  ecran.dim(luminosite == 0);
 
 
   // Synchronisation auto de l'heure
