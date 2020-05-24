@@ -113,6 +113,28 @@ void setup()
   
 
   // WiFi
+  WiFiManager wifiManager;
+  
+  //reset settings - for testing
+  //wifiManager.resetSettings();
+
+  wifiManager.setAPCallback(affichageInitManager);
+  wifiManager.setConfigPortalTimeout(180);
+  wifiManager.setConnectTimeout(DELAI_CONNEXION);
+  if(!wifiManager.autoConnect("IoT-Config"))
+  {
+    Serial.print("Not connected");
+    EEPROM.write(ADDRESS_MODEREGL, MANUEL);
+    EEPROM.commit();
+    wifiConnected = false;
+  }
+  else
+  {
+    Serial.print("Connected, IP address: ");
+    Serial.println(WiFi.localIP());
+    wifiConnected = true;
+  }
+/*  
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
@@ -128,20 +150,8 @@ void setup()
     nbTent++;
   }
   Serial.println();
+  */
 
-  if(nbTent == DELAI_CONNEXION * 2) // Connexion echouee
-  {
-    Serial.print("Not connected");
-    EEPROM.write(ADDRESS_MODEREGL, MANUEL);
-    EEPROM.commit();
-    wifiConnected = false;
-  }
-  else
-  {
-    Serial.print("Connected, IP address: ");
-    Serial.println(WiFi.localIP());
-    wifiConnected = true;
-  }
   affichageInitConnected(wifiConnected);
 
   
@@ -163,7 +173,7 @@ void setup()
   t.every(DELAI_MQTT, mqttPost);
 
   // Meteo
-  updateMeteo();
+  //updateMeteo();
   t.every(3600000, updateMeteo);
 
 

@@ -3,10 +3,10 @@
 
 
 void affichageInitTitre();
-void affichageInitConnexion(int nbPts);
+//void affichageInitConnexion(int nbPts);
+void affichageInitManager (WiFiManager *myWiFiManager);
 void affichageInitConnected(bool success);
 void affichageInitMesures(int compte);
 
 
 #endif
-

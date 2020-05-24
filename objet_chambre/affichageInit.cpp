@@ -26,7 +26,7 @@ void affichageInitTitre()
 
   ecran.display();
 }
-
+/*
 void affichageInitConnexion(int nbPts)
 {
   ecran.fillRect(0, 32, 128, 8, BLACK);
@@ -39,6 +39,36 @@ void affichageInitConnexion(int nbPts)
 
   ecran.display();
 }
+*/
+void affichageInitManager (WiFiManager *myWiFiManager)
+{
+  Serial.println("Entered config mode");
+  Serial.println(WiFi.softAPIP());
+  Serial.println(myWiFiManager->getConfigPortalSSID());
+
+  ecran.fillRect(0, 22, 128, 8, BLACK);
+  ecran.setCursor(12, 22);
+  ecran.print("Echec de connexion");
+  ecran.display();
+  
+  delay(3000);
+  
+  ecran.fillRect(0, 12, 128, 8, BLACK);
+  ecran.setCursor(0, 12);
+  ecran.print("Configuration WiFi :");
+  
+  ecran.fillRect(0, 22, 128, 8, BLACK);
+  ecran.setCursor(12, 22);
+  String ssid = myWiFiManager->getConfigPortalSSID();
+  if(ssid.length() <= 19)
+    ecran.print(ssid);
+  else
+    ecran.print(ssid.substring(0, 16) + "...");
+  
+  ecran.display();
+  
+}
+
 
 void affichageInitConnected(bool success)
 {
@@ -46,7 +76,7 @@ void affichageInitConnected(bool success)
   if(success)
     ecran.print("Connexion reussie");
   else
-    ecran.print("Echec de connexion");
+    ecran.print("Echec de config.");
 
   ecran.display();
 }

@@ -24,6 +24,10 @@
 #include <Timezone.h>
 #include <PubSubClient.h>
 
+#include <DNSServer.h>            //Local DNS Server used for redirecting all requests to the configuration portal
+#include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
+#include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager WiFi Configuration Magic
+
 #include "boutons.h"
 #include "affichageDivers.h"
 #include "affichageNormal.h"
@@ -72,13 +76,13 @@
 #define DELAI_MQTT      120000
 #define DELAI_MESURE    1000
 
-#define WIFI_SSID   "Orange-BB54"
-#define WIFI_PASS   "superpaulo"
+#define WIFI_SSID   "Orange-BB54s"
+#define WIFI_PASS   "superpaulos"
 
 //#define WIFI_SSID   "UPC614C757"
 //#define WIFI_PASS   "tHbdk5cykK8m"
 
-#define DELAI_CONNEXION   30
+#define DELAI_CONNEXION   15
 #define LOCALIZATION_KEY  String("623")         // Paris
 //#define LOCALIZATION_KEY  String("995")       // St-Blaise
 //#define LOCALIZATION_KEY  String("1109787")   // Cesson
