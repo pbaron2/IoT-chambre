@@ -8,8 +8,7 @@
 #include <TM1637Display.h>
 
 #include <Adafruit_Sensor.h>
-#include <DHT.h>
-#include <DHT_U.h>
+#include <Adafruit_BME280.h>
 
 #include <Event.h>
 #include <Timer.h>
@@ -48,7 +47,6 @@
 #define PIN_SDA         D2
 
 #define PIN_BUZZ        D3
-#define PIN_DHT         D4
 
 #define MINUTES   2
 #define HOURS     0
@@ -72,7 +70,7 @@
 
 #define DELAI_RETOUR    15000
 #define DELAI_MQTT      120000
-#define DELAI_MESURE    2000
+#define DELAI_MESURE    1000
 
 #define WIFI_SSID   "Orange-BB54"
 #define WIFI_PASS   "superpaulo"
@@ -92,16 +90,17 @@
 //#define MQTT_PASS     ""
 //#define MQTT_TOPIC    "v1/devices/me/telemetry"
 #define MQTT_SERVER   "192.168.1.100"
-#define MQTT_USER     "iotroom"
+#define MQTT_USER     "iotroom2"
 #define MQTT_PASS     "iotroompassword"
-#define MQTT_TOPIC    "room_measures"
+#define MQTT_TOPIC    "room_measures_array"
+#define IOT_ID        1
 
 
 extern RTC_DS1307 rtc;
 extern TM1637Display afficheur;
 extern Adafruit_SSD1306 ecran;
 
-extern DHT_Unified dht;
+extern Adafruit_BME280 bme;
 
 extern WiFiUDP ntpUDP;
 extern NTPClient timeClient;

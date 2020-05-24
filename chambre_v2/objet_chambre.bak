@@ -153,17 +153,6 @@ DIO
 Wire Wire Line
 	10500 3250 10250 3250
 $Comp
-L Device:R_POT RV2
-U 1 1 5D62547D
-P 10350 5050
-F 0 "RV2" H 10280 5004 50  0000 R CNN
-F 1 "500" H 10280 5095 50  0000 R CNN
-F 2 "Potentiometers:Potentiometer_Trimmer_Bourns_3339H_Horizontal" H 10350 5050 50  0001 C CNN
-F 3 "~" H 10350 5050 50  0001 C CNN
-	1    10350 5050
-	-1   0    0    1   
-$EndComp
-$Comp
 L power:GND #PWR024
 U 1 1 5D694E27
 P 10350 6150
@@ -201,23 +190,10 @@ Wire Wire Line
 Wire Wire Line
 	10100 4800 10350 4800
 Wire Wire Line
-	10350 4800 10350 4900
-Wire Wire Line
 	10500 4600 10350 4600
 Wire Wire Line
 	10350 4600 10350 4800
 Connection ~ 10350 4800
-Wire Wire Line
-	10350 5200 10350 5350
-Wire Wire Line
-	10350 5350 10050 5350
-Wire Wire Line
-	10050 5350 10050 5050
-Wire Wire Line
-	10050 5050 10200 5050
-Connection ~ 10350 5350
-Wire Wire Line
-	10350 5350 10350 5450
 Wire Wire Line
 	9900 5650 10050 5650
 Text GLabel 9350 5650 0    50   Input ~ 0
@@ -1337,4 +1313,6 @@ NoConn ~ 8750 3050
 NoConn ~ 8750 3150
 NoConn ~ 8750 3250
 NoConn ~ 8750 3350
+Wire Wire Line
+	10350 4800 10350 5450
 $EndSCHEMATC

@@ -60,4 +60,3 @@ void affichageInitMesures(int compte)
 
   ecran.display();
 }
-

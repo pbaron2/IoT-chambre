@@ -5,7 +5,6 @@ HTTPClient http;
 int iMesures = 0;
 int temperatureL[NB_MESURES] = {0};
 int humiditeL[NB_MESURES] = {0};
-bool dataValidL[NB_MESURES] = {0};
 
 int iLuminosite = 0;
 int luminositeL[NB_MESURES] = {0};
@@ -63,47 +62,23 @@ void updateMeteo()
 
 void updateDHT()
 {
-  dataValidL[iMesures] = true;
-  
-  sensors_event_t event;  
-  dht.temperature().getEvent(&event);
-  if (!isnan(event.temperature))
+  if(dataValid)
   {
+    float tempI = bme.readTemperature();
     Serial.print("\nTemperature: ");
-    Serial.print(event.temperature);
+    Serial.print(tempI);
     Serial.println(" *C");
+    temperatureL[iMesures] = int(tempI * 10);
     
-    temperatureL[iMesures] = int(event.temperature * 10);
-  }
-  else
-  {
-    temperatureL[iMesures] = temperatureL[(iMesures + NB_MESURES + 1) % NB_MESURES];
-    dataValidL[iMesures] = false;
-    Serial.print("\nFail mesure temperature\n");
-  }
-
-  dht.humidity().getEvent(&event);
-  if (!isnan(event.relative_humidity))
-  {
+    float humiI =bme.readHumidity();
     Serial.print("\nHumidite: ");
-    Serial.print(event.relative_humidity);
+    Serial.print(humiI);
     Serial.println("%");
-    humiditeL[iMesures] = int(event.relative_humidity);
-  }
-  else
-  {
-    humiditeL[iMesures] = humiditeL[(iMesures + NB_MESURES + 1) % NB_MESURES];
-    dataValidL[iMesures] = false;
-    Serial.print("\nFail mesure humidity\n");
-  }
-
-  temperature = moyenneMesures(temperatureL, NB_MESURES);
-  humidite = moyenneMesures(humiditeL, NB_MESURES);
-  iMesures = (iMesures + 1) % NB_MESURES;
-  dataValid = true;
-  for(int i = 0; i < NB_MESURES; i++)
-  {
-    dataValid = dataValid && dataValidL[i];
+    humiditeL[iMesures] = int(humiI);
+  
+    temperature = moyenneMesures(temperatureL, NB_MESURES);
+    humidite = moyenneMesures(humiditeL, NB_MESURES);
+    iMesures = (iMesures + 1) % NB_MESURES;
   }
 }
 

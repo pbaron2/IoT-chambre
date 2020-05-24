@@ -48,7 +48,10 @@ void affichageNormalDyna(DateTime time)
 
   ecran.fillRect(82, 16, 24, 16, BLACK); // Humidite
   ecran.setCursor(82, 16);  
-  ecran.print(editForm(humidite, 100, ' '));
+  if(dataValid)
+    ecran.print(editForm(humidite, 100, ' '));
+  else
+    ecran.print("!!");
 
   if(EEPROM.read(ADDRESS_ETATALAR))
   {
@@ -65,12 +68,18 @@ void affichageNormalDyna(DateTime time)
   ecran.setTextSize(3);
   
   ecran.fillRect(0, 16, 36, 24, BLACK); // Temperature
-  ecran.setCursor(0, 16);  
-  ecran.print(editForm(temperature/10, 100, ' '));
-  
-  ecran.fillRect(45, 16, 18, 24, BLACK); // Temperature (dixieme)
+  ecran.setCursor(0, 16);   
+  if(dataValid)
+   ecran.print(editForm(temperature/10, 100, ' '));
+  else
+    ecran.print("!!");
+   
+    ecran.fillRect(45, 16, 18, 24, BLACK); // Temperature (dixieme)
   ecran.setCursor(45, 16);  
-  ecran.print(abs(temperature - (temperature/10) * 10));
+  if(dataValid)
+    ecran.print(abs(temperature - (temperature/10) * 10));
+  else
+    ecran.print("!");
 
   ecran.display();
 }
@@ -129,5 +138,3 @@ void affichageNormalStat()
   
   ecran.display();
 }
-
-

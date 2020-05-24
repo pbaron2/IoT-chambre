@@ -5,7 +5,7 @@ RTC_DS1307 rtc;
 TM1637Display afficheur = TM1637Display(PIN_CLK_7SEG, PIN_DIO_7SEG);
 Adafruit_SSD1306 ecran(D3);
 
-DHT_Unified dht(PIN_DHT, DHT22);
+Adafruit_BME280 bme;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "europe.pool.ntp.org");
@@ -37,7 +37,7 @@ bool activateAlarme = false;
 unsigned long previousMillis = 0;
 bool etatBuzzer = false;
 
-bool dataValid = false;
+bool dataValid = true;
 
 meteoStruct meteo = {0, 0, 0, 0};
 
@@ -97,8 +97,18 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(PIN_SW3), switchPressed3, RISING);
 
 
-  // DHT
-  dht.begin();
+  // Temp/Humi sensor
+  if (!bme.begin(0x76)) {
+      Serial.println("Could not find a valid BME280 sensor. SensorID was: 0x");
+      Serial.println(bme.sensorID(),16);
+      dataValid = false;
+  }
+  bme.setSampling(Adafruit_BME280::MODE_NORMAL,
+                  Adafruit_BME280::SAMPLING_X2,   // temperature
+                  Adafruit_BME280::SAMPLING_NONE, // pressure
+                  Adafruit_BME280::SAMPLING_X2,   // humidity
+                  Adafruit_BME280::FILTER_X16,
+                  Adafruit_BME280::STANDBY_MS_125 );
   t.every(DELAI_MESURE, updateDHT);
   
 
@@ -151,7 +161,6 @@ void setup()
   client.setServer(MQTT_SERVER, 1883);
   reconnectMqtt();
   t.every(DELAI_MQTT, mqttPost);
-  t.every(5 * DELAI_MQTT, reconnectMqtt);
 
   // Meteo
   updateMeteo();

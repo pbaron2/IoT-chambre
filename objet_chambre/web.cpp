@@ -19,12 +19,14 @@
 
 void mqttPost()
 {
+  reconnectMqtt();
+  
   Serial.println("SEND MQTT DATA :");
   if(dataValid)
   {
     Serial.println("{\"temperature\":" + String(float(temperature) / 10) + ",\"humidity\":" + String(humidite) + ",\"humidity\":" + String(lumiRaw) + "}");
 //    client.publish(MQTT_TOPIC, ("{\"temperature\":" + String(float(temperature) / 10) + ",\"humidity\":" + String(humidite) + "}").c_str(), true);
-    client.publish(MQTT_TOPIC, (String(float(temperature) / 10) + "/" + String(humidite) + "/" + String(lumiRaw)).c_str(), true);
+    client.publish(MQTT_TOPIC, (String(IOT_ID) + "/" + String(float(temperature) / 10) + "/" + String(humidite) + "/" + String(lumiRaw)).c_str(), true);
   }
 }
 
